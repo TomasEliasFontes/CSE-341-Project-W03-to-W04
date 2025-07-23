@@ -8,7 +8,7 @@ const doc = {
     description: 'CRUD API for movies and reviews'
   },
   host: 'localhost:3000',
-  schemes: ['http'],
+  schemes: ['https'],
   definitions: {
     Movie: {
       _id:      '507f1f77bcf86cd799439011',
