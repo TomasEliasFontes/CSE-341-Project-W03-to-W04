@@ -1,26 +1,42 @@
 // server.js
-const express = require('express');
-const app = express();
-const connectDB = require('./data/database');
-const moviesRoutes = require('./routes/movies');
-const reviewsRoutes = require('./routes/reviews');
+const express       = require('express');
+const swaggerUi     = require('swagger-ui-express');
+const swaggerDoc    = require('./swagger.json');
+const connectDB     = require('./data/database');
 
+const app           = express();
+const port          = process.env.PORT || 3000;
+
+// Conect to MongoDB 
 require('dotenv').config();
-connectDB();
+connectDB()
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch(err => {
+    console.error('❌ MongoDB connection error:', err);
+    process.exit(1);
+  });
 
+//Middleware for JSON
 app.use(express.json());
 
-app.use('/movies', moviesRoutes);
-app.use('/reviews', reviewsRoutes);
+//Mount the routers
+app.use('/movies',  require('./routes/movies'));
+app.use('/reviews', require('./routes/reviews'));
 
-// Swagger (opcional por ahora)
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//Use of Swagger UI routes in the /api-docs
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDoc)
+);
 
-app.get('/', (req, res) => {
+//Route o check list
+/* #swagger.ignore = true */
+app.get('/', (_req, res) => {
   res.send('🎬 Movie & Review API is running');
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`API running on port ${port}`));
+//Run Server
+app.listen(port, () => {
+  console.log(`🚀 Server listening on http://localhost:${port}`);
+});
