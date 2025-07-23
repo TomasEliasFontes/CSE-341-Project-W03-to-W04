@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Movie & Review API",
-    "description": "API CRUD para películas y reseñas",
+    "description": "CRUD API for movies and reviews",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
@@ -11,12 +11,25 @@
     "http"
   ],
   "paths": {
-    "/": {
+    "/movies/": {
       "get": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Retrieve all movies",
         "description": "",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Array of movie objects",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Movie"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "500": {
             "description": "Internal Server Error"
@@ -24,34 +37,63 @@
         }
       },
       "post": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Create a new movie",
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Movie data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
+          }
+        ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Movie created",
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Validation error"
           }
         }
       }
     },
-    "/{id}": {
+    "/movies/{id}": {
       "get": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Retrieve a single movie by ID",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Movie ID"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Movie object",
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
+          },
+          "400": {
+            "description": "Invalid ID format"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Movie not found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -59,43 +101,227 @@
         }
       },
       "put": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Update an existing movie",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Movie ID to update"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Fields to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Updated movie object",
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Invalid ID or validation error"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Movie not found"
           }
         }
       },
       "delete": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Delete a movie by ID",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Movie ID to delete"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Movie deleted"
+          },
+          "400": {
+            "description": "Invalid ID format"
+          },
+          "404": {
+            "description": "Movie not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/reviews/": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Retrieve all reviews",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Array of review objects",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Review"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Create a new review",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Review data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Review"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Review created",
+            "schema": {
+              "$ref": "#/definitions/Review"
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/reviews/{id}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Retrieve a single review by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Review ID"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Review object",
+            "schema": {
+              "$ref": "#/definitions/Review"
+            }
+          },
+          "400": {
+            "description": "Invalid ID format"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Review not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Update an existing review",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Review ID to update"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Fields to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Review"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated review object",
+            "schema": {
+              "$ref": "#/definitions/Review"
+            }
+          },
+          "400": {
+            "description": "Invalid ID or validation error"
+          },
+          "404": {
+            "description": "Review not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Delete a review by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Review ID to delete"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Review deleted"
+          },
+          "400": {
+            "description": "Invalid ID format"
+          },
+          "404": {
+            "description": "Review not found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -130,7 +356,7 @@
         },
         "synopsis": {
           "type": "string",
-          "example": "Un ladrón roba secretos corporativos…"
+          "example": "A thief steals corporate secrets…"
         },
         "duration": {
           "type": "number",
@@ -163,7 +389,7 @@
         },
         "comment": {
           "type": "string",
-          "example": "Excelente película"
+          "example": "Great movie!"
         },
         "date": {
           "type": "string",
