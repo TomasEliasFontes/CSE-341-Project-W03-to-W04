@@ -7,7 +7,7 @@ const doc = {
     title: 'Movie & Review API',
     description: 'CRUD API for movies and reviews'
   },
-  host: 'localhost:3000',
+  host: 'cse-341-project-w03-to-w04.onrender.com',
   schemes: ['https'],
   definitions: {
     Movie: {
